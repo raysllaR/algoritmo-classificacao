@@ -7,8 +7,32 @@ from keras.preprocessing.image import ImageDataGenerator  # questionavel a utili
 
 classificador = Sequential()
 
+
+# primeira camada de convolução
 classificador.add(
-    Conv2D(  # primeira camada de convolução
+    Conv2D(
+        64,  # número de filtro
+        (9, 9),  # dimensão do detectores de caracteristicas
+        # Altura e largura da img e numero de canais (3 significa RGB) - converção das imagens originais para este padrão
+        input_shape=(320, 320, 3),
+        activation='relu'  # função de ativação - tirar os valores negativos, que representam as partes mais escuras das imagens
+    )
+)
+
+classificador.add(
+    BatchNormalization()  # deixa os valores do mapa de caracteristica em uma escala de 0 e 1
+)
+
+classificador.add(
+    MaxPooling2D(
+        # matriz de 4 pixels pegando as caracteristicas mais importantes
+        pool_size=(2, 2)
+    )
+)
+
+# segunda camada de convolução
+classificador.add(
+    Conv2D(
         64,  # número de filtro
         (9, 9),  # dimensão do detectores de caracteristicas
         # Altura e largura da img e numero de canais (3 significa RGB) - converção das imagens originais para este padrão
