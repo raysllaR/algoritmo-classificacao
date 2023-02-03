@@ -111,7 +111,7 @@ gerador_teste = ImageDataGenerator(rescale=1./255)
 # base treinamento
 base_treinamento = gerador_treinamento.flow_from_directory(
     'dataset/training',
-    target_size=(128, 128),  # tamanho das imagens
+    target_size=(320, 320),  # tamanho das imagens
     batch_size=32,
     class_mode='binary'  # como vai ficar o problema de classificação
 )
@@ -119,7 +119,16 @@ base_treinamento = gerador_treinamento.flow_from_directory(
 # base teste
 base_teste = gerador_teste.flow_from_directory(
     'dataset/test',
-    target_size=(128, 128),  # tamanho das imagens
+    target_size=(320, 320),  # tamanho das imagens
     batch_size=32,
     class_mode='binary'  # como vai ficar o problema de classificação
+)
+
+# executar treinamento
+classificador.fit(
+    base_treinamento,
+    steps_per_epoch=2000/32,
+    epochs=32,
+    validation_data=base_teste,
+    validation_steps=2000/32
 )
