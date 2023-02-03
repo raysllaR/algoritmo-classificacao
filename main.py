@@ -107,3 +107,11 @@ gerador_treinamento = ImageDataGenerator(
 
 # gerador teste
 gerador_teste = ImageDataGenerator(rescale=1./255)
+
+# treinamento
+base_treinamento = gerador_treinamento.flow_from_directory(
+    'dataset/training',
+    target_size=(128, 128),  # tamanho das imagens
+    batch_size=32,
+    class_mode='binary'  # como vai ficar o problema de classificação
+)
