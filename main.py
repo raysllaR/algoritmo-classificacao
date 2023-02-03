@@ -57,9 +57,12 @@ classificador.add(Flatten())  # transforma a matriz em vetor
 
 # Rede neural densa
 
+
+# primeira camada oculta
+
 classificador.add(
     Dense(
-        units=128,  # primeira camada oculta
+        units=128,
         activation='relu'
     )
 )
@@ -67,12 +70,21 @@ classificador.add(
 #
 classificador.add(Dropout(0.2))  # vai zerar 20% das entradas
 
+# segunda camada oculta
+
 classificador.add(
     Dense(
-        units=128,  # segunda camada oculta
+        units=128,
         activation='relu'
     )
 )
 
-#
 classificador.add(Dropout(0.2))  # vai zerar 20% das entradas
+
+# saída
+classificador.add(
+    Dense(
+        units=1,  # classificação binaria - aceita ou negada
+        activation='sigmoid'
+    )
+)
