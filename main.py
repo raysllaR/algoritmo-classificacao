@@ -5,6 +5,9 @@ from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from keras.layers import BatchNormalization  # normalização das imagens
 from keras.preprocessing.image import ImageDataGenerator  # questionavel a utilização
 
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
 classificador = Sequential()
 
 
