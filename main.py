@@ -67,7 +67,6 @@ classificador.add(
     )
 )
 
-#
 classificador.add(Dropout(0.2))  # vai zerar 20% das entradas
 
 # segunda camada oculta
@@ -87,4 +86,11 @@ classificador.add(
         units=1,  # classificação binaria - aceita ou negada
         activation='sigmoid'
     )
+)
+
+#
+classificador.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics='accuracy'
 )
