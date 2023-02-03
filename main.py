@@ -88,9 +88,19 @@ classificador.add(
     )
 )
 
-#
+# compile
 classificador.compile(
     optimizer='adam',
     loss='binary_crossentropy',
     metrics='accuracy'
+)
+
+# normalização dos dados
+gerador_treinamento = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=7,
+    horizontal_flip=True,  # vai fazer giros horizontais nas imagens
+    shear_range=0.2,
+    height_shift_range=0.07,
+    zoom_range=0.2
 )
