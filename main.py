@@ -66,3 +66,13 @@ classificador.add(
 
 #
 classificador.add(Dropout(0.2))  # vai zerar 20% das entradas
+
+classificador.add(
+    Dense(
+        units=128,  # segunda camada oculta
+        activation='relu'
+    )
+)
+
+#
+classificador.add(Dropout(0.2))  # vai zerar 20% das entradas
