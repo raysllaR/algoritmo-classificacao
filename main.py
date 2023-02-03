@@ -50,3 +50,7 @@ classificador.add(
         pool_size=(2, 2)
     )
 )
+
+# Flattening
+
+classificador.add(Flatten())  # transforma a matriz em vetor
