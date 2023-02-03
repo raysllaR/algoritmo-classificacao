@@ -1,6 +1,6 @@
 from keras.models import Sequential  # modelo sequencial
-# Camanda de convolução, Pooling, Flatten, rede neoral densa
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+# Camanda de convolução, Pooling, Flatten, rede neural densa
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 # Normalização do mapa de caracteristicas
 from keras.layers import BatchNormalization  # normalização das imagens
 from keras.preprocessing.image import ImageDataGenerator  # questionavel a utilização
@@ -54,3 +54,15 @@ classificador.add(
 # Flattening
 
 classificador.add(Flatten())  # transforma a matriz em vetor
+
+# Rede neural densa
+
+classificador.add(
+    Dense(
+        units=128,  # primeira camada oculta
+        activation='relu'
+    )
+)
+
+#
+classificador.add(Dropout(0.2))  # vai zerar 20% das entradas
