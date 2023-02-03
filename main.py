@@ -15,3 +15,7 @@ classificador.add(
         input_shape=(320, 320, 3),
         activation='relu'  # função de ativação - tirar os valores negativos, que representam as partes mais escuras das imagens
     ))
+
+classificador.add(
+    BatchNormalization()  # deixa os valores do mapa de caracteristica em uma escala de 0 e 1
+)
