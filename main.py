@@ -1,6 +1,6 @@
 from keras.models import Sequential  # modelo sequencial
 # Camanda de convolução, Pooling, Flatten, rede neoral densa
-from keras.layers import Conv2D, MaxPool2D, Flatten, Dense
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 # Normalização do mapa de caracteristicas
 from keras.layers import BatchNormalization  # normalização das imagens
 from keras.preprocessing.image import ImageDataGenerator  # questionavel a utilização
@@ -18,4 +18,11 @@ classificador.add(
 
 classificador.add(
     BatchNormalization()  # deixa os valores do mapa de caracteristica em uma escala de 0 e 1
+)
+
+classificador.add(
+    MaxPooling2D(
+        # matriz de 4 pixels pegando as caracteristicas mais importantes
+        pool_size=(2, 2)
+    )
 )
