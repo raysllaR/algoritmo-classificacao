@@ -95,7 +95,7 @@ classificador.compile(
     metrics='accuracy'
 )
 
-# normalização dos dados
+# normalização dos dados - treinamento
 gerador_treinamento = ImageDataGenerator(
     rescale=1./255,
     rotation_range=7,
@@ -104,3 +104,6 @@ gerador_treinamento = ImageDataGenerator(
     height_shift_range=0.07,
     zoom_range=0.2
 )
+
+# gerador teste
+gerador_teste = ImageDataGenerator(rescale=1./255)
