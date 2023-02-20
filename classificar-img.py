@@ -1,15 +1,16 @@
 import keras
 import numpy as np
+import tensorflow as tf
 from keras.models import model_from_json
-
-from flask import Flask, make_response
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 def treinamento(): 
-    #Pegando o arquivo de treinamento
+    # Pegando o arquivo de treinamento
     arquivo = open('treinamento/classificador_teste.json', 'r')
 
     estrutara_rede = arquivo.read()
-    #fechando o arquivo
+    # Fechando o arquivo
     arquivo.close()
 
     # Passando o arquivo de pretreinamento para o classificador
@@ -17,25 +18,52 @@ def treinamento():
     # Pegando os pesos
     classificador.load_weights('treinamento/classificador_teste.h5')
     
+    classificador.compile(
+        optimizer='adam',
+        loss='binary_crossentropy',
+        metrics='accuracy'
+    )
+    
     return classificador
 
 #Initi api
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route('/classificar', methods=['GET'])
-def classification():
+class Link(BaseModel):  
+    img = []
 
-    classificador = treinamento()
-    #Passar img para classificação
-    imagem_teste = keras.utils.load_img('../Images/images50k/AF1QipM0_6a5lWGvGO6yvp1vM9JxUiDO44XpICso4wJK=w1024-h576-k-no.jpg', target_size=(320, 320));
+@app.post('/classificar')
+def classificationLink(link: Link):
 
-    imagem_teste = keras.utils.img_to_array(imagem_teste);
-    imagem_teste /= 255;
-    imagem_teste = np.expand_dims(imagem_teste, axis=0);
+    classificador = treinamento();
+    
+    resposta = {
+        'Aceitas': [],
+        'Recusadas': [],
+        'Erros': []
+        
+    }
+    
+    for img in link.img:
 
-    previsao = classificador.predict(imagem_teste);
+        try:
+            image_url = tf.keras.utils.get_file(origin= img);
 
-    return make_response("Aceita" if (previsao > 0.8) else "Recusada") 
+            # Passar img para classificação
+            imagem_teste = keras.utils.load_img(image_url, target_size=(320, 320));
 
-app.run()
-# base_treinamento.class_indices
+            imagem_teste = keras.utils.img_to_array(imagem_teste);
+            imagem_teste /= 255;
+            imagem_teste = np.expand_dims(imagem_teste, axis=0);
+
+            previsao = classificador.predict(imagem_teste);
+            
+            if(previsao >= 0.9):
+                resposta['Aceitas'].append(img)
+            else:
+                resposta['Recusadas'].append(img)
+            
+        except:
+            resposta['Erros'].append(img)
+
+    return resposta;
