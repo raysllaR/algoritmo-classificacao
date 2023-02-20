@@ -115,7 +115,7 @@ gerador_teste = ImageDataGenerator(rescale=1./255)
 base_treinamento = gerador_treinamento.flow_from_directory(
     'dataset/training',
     target_size=(320, 320),  # tamanho das imagens
-    batch_size=32,
+    batch_size=16,
     class_mode='binary'  # como vai ficar o problema de classificação
 )
 
@@ -130,8 +130,19 @@ base_teste = gerador_teste.flow_from_directory(
 # executar treinamento
 classificador.fit(
     base_treinamento,
-    steps_per_epoch=2000/32,
-    epochs=32,
+    steps_per_epoch=2000/16,
+    epochs=8,
     validation_data=base_teste,
-    validation_steps=2000/32
+    validation_steps=2000/16
 )
+
+#Salvar a classificação
+
+
+classificador_json = classificador.to_json()
+with open('treinamento/classificador_teste.json', 'w') as json_file:
+    json_file.write(classificador_json)
+    
+#Salvando os pesos
+
+classificador.save_weights('treinamento/classificador_teste.h5') # pip install h5py
