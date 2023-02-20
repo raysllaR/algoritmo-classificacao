@@ -4,7 +4,6 @@ from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 # Normalização do mapa de caracteristicas
 from keras.layers import BatchNormalization  # normalização das imagens
 from keras.preprocessing.image import ImageDataGenerator  # questionavel a utilização
-
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -81,6 +80,15 @@ classificador.add(
     )
 )
 
+# terceira camada oculta
+
+classificador.add(
+    Dense(
+        units=128,
+        activation='relu'
+    )
+)
+
 classificador.add(Dropout(0.2))  # vai zerar 20% das entradas
 
 # saída
@@ -131,7 +139,7 @@ base_teste = gerador_teste.flow_from_directory(
 classificador.fit(
     base_treinamento,
     steps_per_epoch=2000/16,
-    epochs=8,
+    epochs=16,
     validation_data=base_teste,
     validation_steps=2000/16
 )
